@@ -1,9 +1,8 @@
 import numpy as np
 import cv2
+print(cv2.getBuildInformation())
 
-import cv2
-
-# 1. Initialize the webcam (0 is usually the default built-in camera)
+# Initialize the webcam (0 is usually the default built-in camera)
 cap = cv2.VideoCapture(0)
 
 # Check if the webcam opened correctly
@@ -11,23 +10,42 @@ if not cap.isOpened():
     print("Error: Could not open webcam.")
     exit()
 
-while True:
-    # 2. Capture frame-by-frame
-    # ret is a boolean (True if frame grabbed successfully), frame is the actual image
-    ret, frame = cap.read()
-    
-    if not ret:
-        print("Error: Failed to grab frame.")
-        break
+# Get capture properties
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+fps = cap.get(cv2.CAP_PROP_FPS)
+if fps == 0 or fps is None:
+    fps = 30.0
 
-    # 3. Display the resulting frame in a window named 'Webcam Feed'
-    cv2.imshow('Webcam Feed', frame)
+# GStreamer udpsink settings (change host/port as needed)
+host = "127.0.0.1"
+port = 5000
 
-    # 4. Break the loop if the 'q' key is pressed
-    # waitKey(1) waits 1ms for a key event; ord('q') returns the ASCII value of 'q'
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+# GStreamer pipeline: encode to H264 and send via RTP/UDP
+gst_pipeline = (
+    'appsrc ! videoconvert ! x264enc tune=zerolatency bitrate=800 speed-preset=ultrafast '
+    '! rtph264pay config-interval=1 pt=96 ! udpsink host={} port={} sync=false'
+).format(host, port)
 
-# 5. Release the camera hardware and destroy all windows
-cap.release()
-cv2.destroyAllWindows()
+# OpenCV VideoWriter using GStreamer
+out = cv2.VideoWriter(gst_pipeline, cv2.CAP_GSTREAMER, 0, fps, (width, height), True)
+if not out.isOpened():
+    print("Error: Could not open GStreamer pipeline for writing. Ensure OpenCV was built with GStreamer support.")
+    cap.release()
+    exit()
+
+print(f"Streaming to {host}:{port} via GStreamer udpsink. Press Ctrl+C to stop.")
+
+try:
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("Error: Failed to grab frame.")
+            break
+        out.write(frame)
+except KeyboardInterrupt:
+    print("Interrupted by user.")
+finally:
+    cap.release()
+    out.release()
+    cv2.destroyAllWindows()
