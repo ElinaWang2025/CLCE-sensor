@@ -20,3 +20,9 @@ export CMAKE_ARGS="-DWITH_GSTREAMER=ON -DWITH_GSTREAMER_0_10=OFF"
 pip install --no-binary opencv-python opencv-python
 
 ```
+
+
+on laptop stream
+```sh
+gst-launch-1.0 udpsrc port=5000 ! application/x-rtp, payload=96 ! rtph264depay ! decodebin ! autovideosink
+```

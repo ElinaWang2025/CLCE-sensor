@@ -18,13 +18,13 @@ if fps == 0 or fps is None:
     fps = 30.0
 
 # GStreamer udpsink settings (change host/port as needed)
-host = "10.90.24.193"
+host = "192.168.4.121"#"10.90.24.193"
 port = 5000
 
 # GStreamer pipeline: encode to H264 and send via RTP/UDP
 gst_pipeline = (
-    'appsrc ! videoconvert ! x264enc tune=zerolatency bitrate=800 speed-preset=ultrafast '
-    '! rtph264pay config-interval=1 pt=96 ! udpsink host={} port={} sync=false'
+"appsrc ! videoconvert ! x264enc threads=1 tune=zerolatency bitrate=800 speed-preset=ultrafast ! " \
+"rtph264pay config-interval=1 pt=96 ! udpsink host={} port={} sync=false"
 ).format(host, port)
 
 # OpenCV VideoWriter using GStreamer
@@ -48,4 +48,4 @@ except KeyboardInterrupt:
 finally:
     cap.release()
     out.release()
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
