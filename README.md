@@ -26,3 +26,8 @@ on laptop stream
 ```sh
 gst-launch-1.0 udpsrc port=5000 ! application/x-rtp, payload=96 ! rtph264depay ! decodebin ! autovideosink
 ```
+
+running on pi5
+```sh
+source /home/cee/CLCE-sensor/.venv/bin/activate
+```
