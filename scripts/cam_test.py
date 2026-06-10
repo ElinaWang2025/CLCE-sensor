@@ -18,7 +18,7 @@ if fps == 0 or fps is None:
     fps = 30.0
 
 # GStreamer udpsink settings (change host/port as needed)
-host = "127.0.0.1"
+host = "10.90.24.193"
 port = 5000
 
 # GStreamer pipeline: encode to H264 and send via RTP/UDP
