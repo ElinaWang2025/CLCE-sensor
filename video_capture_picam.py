@@ -49,6 +49,8 @@ encoder = H264Encoder(bitrate=4000000)
 
 cam.start()
 
+# button.wait_for_press()
+
 # cam.start_encoder(encoder, output)
 cam.start_recording(encoder, h264_temp_file, quality=Quality.HIGH)
 # 3. Fetch the metadata from the absolute first frame to find its hardware timestamp
