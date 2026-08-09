@@ -13,7 +13,12 @@ cam = Picamera2()
 
 still_config = cam.create_still_configuration(main={"size": (224, 224)})
 
-video_config = cam.create_video_configuration(main={"size": (224, 224)})
+video_config = cam.create_video_configuration(main={"size": (224, 224)}, controls={
+    "AeEnable": False,  # Disable auto exposure
+    "ExposureTime": 20000,  # Set exposure time to 20 ms (20000 microseconds)
+    "AnalogueGain": 1.0,  # Set analogue gain to 1.0 (no gain)
+    "AwbEnable": False,  # Disable auto white balance
+})
 
 
 # --- User inputs ---
