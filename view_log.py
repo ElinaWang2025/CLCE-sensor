@@ -9,6 +9,7 @@ with gzip.open(sys.argv[1], "rb") as f:
     print(f"Loaded log with {len(log['frames'])} frames and {len(log['timestamps'])} timestamps.")
 
 image_data = log['frames'][0]  # Get the first frame for visualization
+print(image_data)  # Print the shape of the image data
 plt.imshow(image_data)
 plt.title(log['timestamps'][0])
 plt.show()
