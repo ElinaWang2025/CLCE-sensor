@@ -14,13 +14,13 @@ cam = Picamera2()
 
 still_config = cam.create_still_configuration(main={"size": (224, 224)})
 
-video_config = cam.create_video_configuration(main={"size": (224, 224)})
-# , controls={
-#     "AeEnable": False,  # Disable auto exposure
-#     "ExposureTime": 20000,  # Set exposure time to 20 ms (20000 microseconds)
-#     "AnalogueGain": 1.0,  # Set analogue gain to 1.0 (no gain)
-#     "AwbEnable": False,  # Disable auto white balance
-# })
+video_config = cam.create_video_configuration(main={"size": (224, 224)}, controls={
+    "AeEnable": False,  # Disable auto exposure
+    "ExposureTime": 10000,  # Set exposure time to 10 ms (10000 microseconds)
+    "AnalogueGain": 2.0,  # Set analogue gain to 2.0
+    "AwbEnable": False,  # Disable auto white balance
+    "FrameRate": 30,  # Set framerate to 30 fps
+})
 
 
 # --- User inputs ---
@@ -79,10 +79,14 @@ log = {"frames": [], "timestamps": []}
 
 try:
     while True:
-        frame = cam.capture_array()
-        log["frames"].append(frame)
-        latest_frame_metadata = cam.capture_metadata()
-        log["timestamps"].append(latest_frame_metadata['SensorTimestamp'])
+        request = cam.capture_request()
+        image_frame = request.make_array("main")  # Extracts the image buffer
+        metadata = request.get_metadata()   # Extracts exact metadata for this frame
+        request.release()                   # Always release the request when done
+        # frame = cam.capture_array()
+        log["frames"].append(image_frame)
+        # latest_frame_metadata = cam.capture_metadata()
+        log["timestamps"].append(metadata['SensorTimestamp'])
         print(f"Timestamp: {log['timestamps'][-1]} ns",end="\r")
 
 except KeyboardInterrupt:
