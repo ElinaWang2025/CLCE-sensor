@@ -53,6 +53,7 @@ cam.configure(video_config)
 cam.start()
 
 button.wait_for_press()
+t_trigger = time.time()
 led.on() 
 time.sleep(0.5)  # Short delay to ensure LED is on before starting capture
 print("Recording... press Ctrl+C to stop.")
@@ -79,15 +80,16 @@ log = {"frames": [], "timestamps": []}
 
 try:
     while True:
-        request = cam.capture_request()
-        image_frame = request.make_array("main")  # Extracts the image buffer
-        metadata = request.get_metadata()   # Extracts exact metadata for this frame
-        request.release()                   # Always release the request when done
-        # frame = cam.capture_array()
-        log["frames"].append(image_frame)
+        # request = cam.capture_request()
+        # image_frame = request.make_array("main")  # Extracts the image buffer
+        # metadata = request.get_metadata()   # Extracts exact metadata for this frame
+        # request.release()                   # Always release the request when done
+        frame = cam.capture_array()
+        timestamp = time.time()-t_trigger
+        log["frames"].append(frame)
         # latest_frame_metadata = cam.capture_metadata()
-        log["timestamps"].append(metadata['SensorTimestamp'])
-        print(f"Timestamp: {log['timestamps'][-1]} ns",end="\r")
+        log["timestamps"].append(timestamp)
+        print(f"Timestamp: {log['timestamps'][-1]} s",end="\r")
 
 except KeyboardInterrupt:
     pass
