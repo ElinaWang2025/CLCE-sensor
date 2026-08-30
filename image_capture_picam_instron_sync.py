@@ -12,9 +12,9 @@ led = LED(18)
 
 cam = Picamera2()
 
-still_config = cam.create_still_configuration(main={"size": (1024, 1024)})
+still_config = cam.create_still_configuration(main={"size": (2048, 2048)})
 
-video_config = cam.create_video_configuration(main={"size": (1024, 1024)}, controls={
+video_config = cam.create_video_configuration(main={"size": (2048, 2048)}, controls={
     "AeEnable": False,  # Disable auto exposure
     "ExposureTime": 12000,  # Set exposure time to 12 ms
     "AnalogueGain": 4.0,  # Set analogue gain to 4.0
