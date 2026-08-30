@@ -12,14 +12,14 @@ led = LED(18)
 
 cam = Picamera2()
 
-still_config = cam.create_still_configuration(main={"size": (224, 224)})
+still_config = cam.create_still_configuration(main={"size": (1024, 1024)})
 
-video_config = cam.create_video_configuration(main={"size": (224, 224)}, controls={
+video_config = cam.create_video_configuration(main={"size": (1024, 1024)}, controls={
     "AeEnable": False,  # Disable auto exposure
-    "ExposureTime": 10000,  # Set exposure time to 10 ms (10000 microseconds)
-    "AnalogueGain": 2.0,  # Set analogue gain to 2.0
+    "ExposureTime": 12000,  # Set exposure time to 12 ms
+    "AnalogueGain": 4.0,  # Set analogue gain to 4.0
     "AwbEnable": False,  # Disable auto white balance
-    "FrameRate": 30,  # Set framerate to 30 fps
+    "FrameRate": 40,  # Set framerate to 40 fps
 })
 
 
@@ -107,6 +107,7 @@ time.sleep(0.2)
 cam.capture_file(f"{base_name}_end.jpg")
 print(f"Captured end frame: {base_name}_end.jpg")
 cam.stop()
+time.sleep(5)
 led.off()    # Turn LED off
 
 print("Done.")
