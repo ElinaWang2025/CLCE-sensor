@@ -7,17 +7,17 @@ This project interfaces with a camera
 Setup virtual environment for this repo
 
 ```sh
-python3 -m venv .venv
+uv venv
 source .venv/bin/activate
-pip install numpy 
-sudo apt update
-sudo apt install -y gstreamer1.0-tools gstreamer1.0-plugins-base \
-gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
-libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-gstreamer1.0-libcamera
+uv pip install numpy 
+# sudo apt update
+# sudo apt install -y gstreamer1.0-tools gstreamer1.0-plugins-base \
+# gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
+# libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+# gstreamer1.0-libcamera
 # Force pip to build from source distribution and inject the GStreamer flag
-export CMAKE_ARGS="-DWITH_GSTREAMER=ON -DWITH_GSTREAMER_0_10=OFF"
-pip install --no-binary opencv-python opencv-python
+# export CMAKE_ARGS="-DWITH_GSTREAMER=ON -DWITH_GSTREAMER_0_10=OFF"
+uv pip install --no-binary opencv-python opencv-python
 
 ```
 
