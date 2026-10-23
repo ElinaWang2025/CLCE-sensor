@@ -4,10 +4,15 @@ This project interfaces with a camera
 
 ## Installation
 
+```sh
+sudo apt update
+sudo apt install -y python3-picamera2
+```
+
 Setup virtual environment for this repo
 
 ```sh
-uv venv
+uv venv --system-site-packages
 source .venv/bin/activate
 uv pip install numpy 
 # sudo apt update
@@ -17,8 +22,7 @@ uv pip install numpy
 # gstreamer1.0-libcamera
 # Force pip to build from source distribution and inject the GStreamer flag
 # export CMAKE_ARGS="-DWITH_GSTREAMER=ON -DWITH_GSTREAMER_0_10=OFF"
-uv pip install --no-binary opencv-python opencv-python
-
+uv pip install opencv-python
 ```
 
 
